@@ -1,0 +1,1 @@
+# strona_dla_szkoly
