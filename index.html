@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="pl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dziennik elektroniczny – Szkoła Podstawowa</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<div id="login" hidden>
+  <div class="card login">
+    <h1>Dziennik szkolny</h1>
+    <form data-h="login"><label>E-mail<input name="email" type="email" required autofocus></label>
+      <label>Hasło<input name="password" type="password" required></label><button>Zaloguj się</button></form>
+    <p><a href="#" data-c="showReset">Nie pamiętam hasła</a></p>
+    <div id="resetBox" hidden>
+      <form data-h="resetReq"><label>E-mail konta<input name="email" type="email" required></label><button class="sec">Wyślij token resetu</button></form>
+      <form data-h="resetDo"><label>Token z wiadomości<input name="token" required></label><label>Nowe hasło (min. 8 znaków)<input name="password" type="password" minlength="8" required></label><button class="sec">Ustaw nowe hasło</button></form>
+      <p class="muted">Bez skonfigurowanej poczty token trafia do pliku <code>data/mail.log</code>.</p>
+    </div>
+    <p class="muted">Konta demo (hasło <code>haslo123</code>): admin@, dyrektor@, sekretariat@, nauczyciel@, wychowawca@, rodzic@, uczen@ + <code>szkola.local</code></p>
+  </div>
+</div>
+<div id="app" hidden>
+  <header><strong>Dziennik szkolny</strong><span id="who"></span><button class="sec" data-c="logout">Wyloguj</button></header>
+  <div class="layout"><nav id="nav"></nav><main id="main"></main></div>
+</div>
+<div id="toast" role="status"></div>
+<script src="app.js"></script></body></html>
