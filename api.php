@@ -1,5 +1,5 @@
 <?php
-
+// Punkt wejścia API: sesja, routing akcji
 require __DIR__ . '/src/config.php';
 require __DIR__ . '/src/db.php';
 require __DIR__ . '/src/helpers.php';
@@ -17,7 +17,7 @@ header('Content-Type: application/json; charset=utf-8');
 $in = json_decode(file_get_contents('php://input'), true) ?: [];
 $A = $_GET['action'] ?? '';
 
-
+// sesja wygasa po 30 min bezczynności
 if (isset($_SESSION['last']) && time() - $_SESSION['last'] > SESSION_TTL) {
     session_unset();
 }
@@ -26,11 +26,11 @@ if ($U)
     $_SESSION['last'] = time();
 
 try {
-
+    // trasy z instrukcją switch (kończą się out()/err(), jeśli akcja pasuje)
     foreach (['route_auth', 'route_school', 'route_journal'] as $route) {
         $route($A);
     }
-
+    // pozostałe akcje to funkcje act_<nazwa>() z src/routes/*.php
     $handler = 'act_' . preg_replace('/\W/', '', $A);
     if (!function_exists($handler))
         err('Nieznana akcja', 404);
@@ -38,4 +38,3 @@ try {
 } catch (PDOException $e) {
     err('Błąd bazy danych', 500);
 }
-
