@@ -105,6 +105,13 @@ main {
   max-width: 400px;
   margin: 8vh auto;
 }
+.demo-accounts {
+  display: grid;
+  gap: 0.35rem;
+}
+.demo-accounts button {
+  text-align: left;
+}
 form {
   display: flex;
   flex-direction: column;

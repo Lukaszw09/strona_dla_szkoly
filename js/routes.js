@@ -28,6 +28,7 @@ H.login = async (d) => {
   const r = await api("login", d);
   start(r);
 };
+H.demoLogin = (email) => H.login({ email, password: "haslo123" });
 H.logout = async () => {
   await api("logout");
   ME = null;
