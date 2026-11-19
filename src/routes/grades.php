@@ -33,6 +33,19 @@ function act_grade_delete() {
     out(['ok' => 1]);
 }
 
+function act_grade_update() {
+    global $U;
+    need('nauczyciel','wychowawca');
+    $value=(int)g('value');
+    $kind=g('kind','cząstkowa');
+    if($value<1||$value>6) err('Ocena musi być w skali 1-6');
+    if(!in_array($kind,GRADE_KINDS)) err('Nieprawidłowy rodzaj oceny');
+    $changed=q('UPDATE grades SET value=?,kind=? WHERE id=? AND teacher_id=?',[$value,$kind,(int)g('id'),$U['id']]);
+    if(!$changed->rowCount()) err('Nie można edytować tej oceny',403);
+    logit('grade_update',(string)g('id'));
+    out(['ok'=>1]);
+}
+
 /** Lista ocen uczniów wybranego przydziału (klasa + przedmiot nauczyciela). */
 function act_grades_for_assignment() {
     global $U;

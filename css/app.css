@@ -1,0 +1,180 @@
+#app > header.app-header {
+  position: sticky;
+  z-index: 20;
+  top: 0;
+  display: flex;
+  min-height: var(--app-header-height);
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-6);
+  padding: 0.625rem clamp(1rem, 3vw, 2.5rem);
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.app-brand {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: var(--space-3);
+  color: var(--color-ink);
+  text-decoration: none;
+}
+
+.app-brand:hover {
+  color: var(--color-link);
+}
+
+.app-brand .school-brand-mark {
+  width: 2.75rem;
+  height: 2.75rem;
+}
+
+.app-brand-copy {
+  display: grid;
+  gap: 0.125rem;
+}
+
+.app-brand-copy strong {
+  color: var(--color-ink);
+  font-size: 1rem;
+  font-weight: 720;
+  letter-spacing: -0.02em;
+}
+
+.app-brand-copy small {
+  color: var(--color-muted);
+  font-size: 0.78rem;
+}
+
+.app-account {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+#who {
+  max-width: min(34vw, 28rem);
+  margin-right: var(--space-2);
+  padding: 0.45rem 0.75rem;
+  overflow: hidden;
+  border-left: 2px solid var(--color-primary);
+  color: var(--color-muted);
+  font-size: 0.86rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#app > header button.sec {
+  min-height: 40px;
+  background: var(--color-surface);
+}
+
+#app > header button.sec:hover {
+  border-color: var(--color-primary);
+  color: var(--color-link);
+}
+
+#app .layout {
+  display: flex;
+  min-height: calc(100vh - var(--app-header-height));
+}
+
+#app #nav {
+  position: sticky;
+  top: var(--app-header-height);
+  display: flex;
+  width: 16.5rem;
+  height: calc(100vh - var(--app-header-height));
+  flex: 0 0 16.5rem;
+  flex-direction: column;
+  align-self: flex-start;
+  gap: var(--space-1);
+  overflow-y: auto;
+  padding: var(--space-4) var(--space-3) var(--space-8);
+  border-right: 1px solid var(--color-nav-border);
+  background: var(--color-nav);
+  scrollbar-color: #587181 transparent;
+  scrollbar-width: thin;
+}
+
+#app #nav::before {
+  padding: var(--space-2) var(--space-3) var(--space-4);
+  color: var(--color-nav-muted);
+  content: "Menu";
+  font-size: 0.85rem;
+  font-weight: 680;
+}
+
+#app #nav .nav-group {
+  display: grid;
+  gap: 0.125rem;
+  margin-bottom: var(--space-2);
+}
+
+#app #nav .nav-section-label {
+  padding: var(--space-2) var(--space-3);
+  color: var(--color-nav-muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+#app #nav button {
+  position: relative;
+  width: 100%;
+  min-height: 42px;
+  justify-content: flex-start;
+  padding: 0.625rem 0.75rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-control);
+  background: transparent;
+  color: var(--color-nav-text);
+  text-align: left;
+  font-size: 0.875rem;
+  font-weight: 520;
+}
+
+#app #nav button:hover {
+  background: var(--color-nav-hover);
+  color: #fff;
+}
+
+#app #nav button.on {
+  border-color: rgb(85 197 182 / 18%);
+  background: var(--color-nav-active);
+  color: var(--color-nav-active-text);
+  font-weight: 680;
+}
+
+#app #nav button.on::before {
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: -1px;
+  width: 3px;
+  border-radius: 0 var(--radius-pill) var(--radius-pill) 0;
+  background: var(--color-primary);
+  content: "";
+}
+
+#app #main {
+  width: min(100% - 2rem, 100rem);
+  max-width: 100rem;
+  min-width: 0;
+  flex: 1;
+  margin: 0 auto;
+  padding: clamp(1.75rem, 3.5vw, 3.5rem);
+}
+
+#app #main > h2 {
+  margin: 0 0 var(--space-6);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+  font-size: clamp(1.75rem, 2.6vw, 2.2rem);
+}
+
+#app #main > .muted:first-of-type {
+  margin-top: calc(var(--space-2) * -1);
+  margin-bottom: var(--space-6);
+}

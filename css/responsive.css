@@ -1,0 +1,336 @@
+@media (max-width: 1024px) {
+  #app #nav {
+    width: 14.5rem;
+    flex-basis: 14.5rem;
+  }
+
+  .school-hero {
+    min-height: 34rem;
+    gap: var(--space-8);
+    padding: clamp(2rem, 5vw, 4rem);
+  }
+}
+
+@media (max-width: 900px) {
+  .public-header {
+    gap: var(--space-3) var(--space-4);
+    flex-wrap: wrap;
+  }
+
+  .school-nav {
+    order: 3;
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .school-header-actions {
+    margin-left: auto;
+  }
+
+  .school-hero {
+    min-height: 0;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .school-awards {
+    width: 100%;
+    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  }
+
+  .login-shell {
+    min-height: 0;
+    grid-template-columns: minmax(15rem, 0.72fr) minmax(0, 1.28fr);
+  }
+
+  .login {
+    padding: 2rem;
+  }
+}
+
+@media (max-width: 760px) {
+  #app > header.app-header {
+    position: relative;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .app-account {
+    width: 100%;
+    gap: var(--space-2);
+  }
+
+  #who {
+    min-width: 0;
+    max-width: none;
+    flex: 1;
+    overflow-wrap: anywhere;
+  }
+
+  #app .layout {
+    min-height: calc(100vh - 7rem);
+    flex-direction: column;
+  }
+
+  #app #nav {
+    position: sticky;
+    z-index: 10;
+    top: 0;
+    width: 100%;
+    height: auto;
+    flex: 0 0 auto;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: var(--space-1);
+    overflow-x: auto;
+    padding: var(--space-2) var(--space-3);
+    border-right: 0;
+    border-bottom: 1px solid var(--color-nav-border);
+    scrollbar-width: thin;
+  }
+
+  #app #nav::before,
+  #app #nav .nav-section-label {
+    display: none;
+  }
+
+  #app #nav .nav-group {
+    display: contents;
+  }
+
+  #app #nav button {
+    width: auto;
+    min-width: max-content;
+    min-height: 44px;
+    padding: 0.625rem 0.8rem;
+  }
+
+  #app #nav button.sm,
+  #app #main button.sm {
+    min-height: 44px;
+  }
+
+  #app #nav button.on::before {
+    top: auto;
+    right: 0.65rem;
+    bottom: 0;
+    left: 0.65rem;
+    width: auto;
+    height: 3px;
+    border-radius: var(--radius-pill) var(--radius-pill) 0 0;
+  }
+
+  #app #main {
+    width: 100%;
+    padding: 1.5rem 1.25rem 3rem;
+  }
+
+  .login-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .login-aside {
+    min-height: 20rem;
+  }
+
+  .login-aside-copy h2 {
+    font-size: clamp(2.4rem, 8vw, 3.2rem);
+  }
+
+  .login-toolbar {
+    margin-bottom: var(--space-8);
+  }
+
+  .school-footer {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: var(--space-4) 1.25rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .public-tools {
+    grid-template-columns: minmax(0, 1fr);
+    padding: var(--space-4);
+  }
+
+  .public-tools form.row {
+    align-items: stretch;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 520px) {
+  .app-brand .school-brand-mark {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  .app-account button {
+    min-height: 42px;
+    padding-inline: 0.65rem;
+    font-size: 0.82rem;
+  }
+
+  #app #main {
+    padding-inline: 1rem;
+  }
+
+  #main > form.row {
+    width: 100%;
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  #main > form.row > label,
+  form.row > label {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .login-shell {
+    width: 100%;
+    min-height: 100vh;
+    border: 0;
+    border-radius: 0;
+  }
+
+  #login:not([hidden]) {
+    display: block;
+    padding: 0;
+  }
+
+  .login-aside {
+    min-height: 16rem;
+    padding: 1.5rem;
+  }
+
+  .login-aside-copy h2 {
+    margin: 0.5rem 0;
+    font-size: 2.3rem;
+  }
+
+  .login-aside-copy > p:last-child {
+    margin-bottom: 0;
+  }
+
+  .login {
+    padding: 1.5rem;
+  }
+
+  .demo-accounts {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .demo-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .school-header-actions {
+    gap: var(--space-1);
+  }
+
+  .school-header-actions button {
+    padding-inline: 0.65rem;
+    font-size: 0.8rem;
+  }
+
+  .public-main {
+    padding: 1rem 0.75rem 3rem;
+  }
+
+  .school-hero {
+    gap: var(--space-6);
+    padding: 1.5rem;
+    border-radius: var(--radius-card);
+  }
+
+  .school-hero h1 {
+    max-width: 12ch;
+    font-size: clamp(2.45rem, 11vw, 3.5rem);
+  }
+
+  .school-hero-actions {
+    align-items: stretch;
+    flex-direction: column;
+    margin-top: var(--space-6);
+  }
+
+  .school-hero-actions > * {
+    width: 100%;
+  }
+
+  .school-sport,
+  .school-contact {
+    align-items: stretch;
+    flex-direction: column;
+    gap: var(--space-4);
+    padding: var(--space-4);
+  }
+
+  .school-sport-list,
+  .school-contact-details {
+    min-width: 0;
+  }
+
+  .school-footer a {
+    white-space: normal;
+  }
+
+  #toast {
+    right: var(--space-3);
+    bottom: var(--space-3);
+    max-width: calc(100vw - 1.5rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+
+  button:active,
+  .school-hero-link:hover {
+    transform: none;
+  }
+}
+
+@media print {
+  #app > header,
+  #app #nav,
+  .public-header,
+  .noprint,
+  #toast {
+    display: none !important;
+  }
+
+  #app .layout {
+    display: block;
+  }
+
+  #app #main {
+    width: 100%;
+    max-width: none;
+    padding: 0;
+  }
+
+  .tw {
+    overflow: visible;
+    border: 0;
+    box-shadow: none;
+  }
+
+  table {
+    min-width: 0;
+  }
+}

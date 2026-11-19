@@ -1,0 +1,206 @@
+#login:not([hidden]) {
+  display: grid;
+  min-height: 100vh;
+  place-items: center;
+  padding: clamp(1rem, 4vw, 3rem);
+}
+
+.login-shell {
+  display: grid;
+  width: min(72rem, 100%);
+  min-height: min(48rem, calc(100svh - 3rem));
+  grid-template-columns: minmax(18rem, 0.82fr) minmax(0, 1.18fr);
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-panel);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-float);
+}
+
+.login-aside {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-8);
+  padding: clamp(2rem, 5vw, 4rem);
+  background: var(--color-login-panel);
+  color: #fff;
+}
+
+.login-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  color: #fff;
+  text-decoration: none;
+}
+
+.login-brand:hover {
+  color: #fff;
+}
+
+.login-brand .school-brand-mark {
+  border: 1px solid rgb(255 255 255 / 20%);
+  background: rgb(255 255 255 / 8%);
+  color: #d5f3ed;
+}
+
+.login-brand > span:last-child {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.login-brand strong {
+  font-size: 1rem;
+  font-weight: 650;
+}
+
+.login-brand small {
+  color: #c1d0d8;
+  font-size: 0.82rem;
+}
+
+.login-aside-copy {
+  max-width: 25rem;
+  margin: auto 0;
+}
+
+.login-kicker {
+  margin-bottom: var(--space-4);
+  color: #a8ded6;
+  font-size: 0.875rem;
+  font-weight: 650;
+}
+
+.login-aside-copy h2 {
+  margin: 0 0 var(--space-4);
+  color: #fff;
+  font-size: clamp(2.5rem, 4.5vw, 4rem);
+  letter-spacing: -0.05em;
+  line-height: 1.03;
+}
+
+.login-aside-copy > p:last-child {
+  max-width: 22rem;
+  margin: 0;
+  color: #c1d0d8;
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.login-back-link {
+  width: fit-content;
+  color: #a8ded6;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.login-back-link:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+
+.login {
+  min-width: 0;
+  margin: 0;
+  padding: clamp(2rem, 5vw, 4rem);
+  border: 0;
+  border-radius: 0;
+  background: var(--color-surface);
+  box-shadow: none;
+}
+
+.login-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: clamp(2rem, 5vw, 3.5rem);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.login-toolbar > span {
+  color: var(--color-muted);
+  font-size: 0.85rem;
+  font-weight: 650;
+}
+
+.login-toolbar button {
+  min-height: 38px;
+  padding: 0.4rem 0.7rem;
+  font-size: 0.82rem;
+}
+
+.login h1 {
+  margin: 0 0 var(--space-2);
+  font-size: clamp(2rem, 3vw, 2.5rem);
+}
+
+.login-intro {
+  margin-bottom: var(--space-6);
+  color: var(--color-muted);
+}
+
+.login form:not(.row) {
+  margin: 0;
+}
+
+.login form > button {
+  margin-top: var(--space-1);
+}
+
+.login-reset {
+  margin: var(--space-3) 0 var(--space-6);
+  font-size: 0.9rem;
+}
+
+.login-reset a {
+  font-weight: 600;
+}
+
+#resetBox {
+  margin-bottom: var(--space-6);
+}
+
+.demo-accounts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-2);
+  margin-top: var(--space-6);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border);
+}
+
+.demo-heading {
+  display: flex;
+  grid-column: 1 / -1;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-1);
+}
+
+.demo-heading strong {
+  font-size: 0.9rem;
+}
+
+.demo-heading span {
+  color: var(--color-muted);
+  font-size: 0.82rem;
+}
+
+.demo-heading code {
+  color: var(--color-link);
+  font-family: var(--font-mono);
+}
+
+.demo-accounts button {
+  min-height: 44px;
+  justify-content: flex-start;
+  padding: 0.55rem 0.7rem;
+  overflow-wrap: anywhere;
+  text-align: left;
+  font-size: 0.8rem;
+}

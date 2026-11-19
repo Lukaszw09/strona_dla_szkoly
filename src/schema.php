@@ -18,4 +18,16 @@ CREATE TABLE access_log(id INTEGER PRIMARY KEY,user_id INTEGER,action TEXT,detai
 CREATE TABLE reset_tokens(email TEXT,token TEXT,expires INTEGER);
 CREATE TABLE grades(id INTEGER PRIMARY KEY,student_id INTEGER,subject_id INTEGER,teacher_id INTEGER,value INTEGER NOT NULL,kind TEXT NOT NULL DEFAULT 'cząstkowa',date TEXT);
 CREATE TABLE remarks(id INTEGER PRIMARY KEY,student_id INTEGER,teacher_id INTEGER,text TEXT,date TEXT);
+CREATE TABLE cms_sections(id INTEGER PRIMARY KEY,slug TEXT UNIQUE NOT NULL,title TEXT NOT NULL,content TEXT NOT NULL,section_order INTEGER DEFAULT 0,published INTEGER DEFAULT 1);
+CREATE TABLE cms_menu(id INTEGER PRIMARY KEY,title TEXT NOT NULL,slug TEXT NOT NULL,menu_order INTEGER DEFAULT 0,published INTEGER DEFAULT 1);
+CREATE TABLE announcements(id INTEGER PRIMARY KEY,title TEXT NOT NULL,content TEXT NOT NULL,published_at TEXT,published INTEGER DEFAULT 1);
+CREATE TABLE events(id INTEGER PRIMARY KEY,title TEXT NOT NULL,event_date TEXT NOT NULL,event_time TEXT,end_date TEXT,description TEXT,location TEXT);
+CREATE TABLE gallery(id INTEGER PRIMARY KEY,title TEXT NOT NULL,image_url TEXT NOT NULL,description TEXT,created_at TEXT);
+CREATE TABLE documents(id INTEGER PRIMARY KEY,title TEXT NOT NULL,file_url TEXT NOT NULL,category TEXT,created_at TEXT);
+CREATE TABLE meal_menus(id INTEGER PRIMARY KEY,menu_date TEXT NOT NULL,title TEXT,description TEXT);
+CREATE TABLE newsletter_subscribers(id INTEGER PRIMARY KEY,email TEXT UNIQUE NOT NULL,consent INTEGER DEFAULT 1,created_at TEXT);
+CREATE TABLE feedback(id INTEGER PRIMARY KEY,user_id INTEGER,name TEXT,email TEXT,subject TEXT,message TEXT,status TEXT DEFAULT 'nowe',created_at TEXT);
+CREATE TABLE messages(id INTEGER PRIMARY KEY,sender_id INTEGER,recipient_id INTEGER,subject TEXT,body TEXT,is_read INTEGER DEFAULT 0,created_at TEXT);
+CREATE TABLE privacy_consents(id INTEGER PRIMARY KEY,user_id INTEGER,purpose TEXT,consent INTEGER NOT NULL,consent_text TEXT,created_at TEXT);
+CREATE TABLE migration_runs(id INTEGER PRIMARY KEY,name TEXT UNIQUE NOT NULL,status TEXT,details TEXT,run_at TEXT);
 ";

@@ -12,7 +12,9 @@ function route_journal($A) {
             $d = g('date');
             if (!validDate($d))
                 err('Podaj poprawną datę');
-            $no = (int)g('lesson_no', 1);
+            $no = filter_var(g('lesson_no', 1), FILTER_VALIDATE_INT);
+            if ($no === false || $no < 1 || $no > 10)
+                err('Nieprawidłowy numer lekcji');
             $a = one('SELECT a.*,s.name subject,c.name class FROM assignments a JOIN subjects s ON s.id=a.subject_id JOIN classes c ON c.id=a.class_id WHERE a.id=? AND a.teacher_id=?', [g('assignment_id'), $U['id']]);
             if (!$a) {
                 logit('DENIED', 'lesson_open ' . g('assignment_id'));
@@ -27,7 +29,9 @@ function route_journal($A) {
             $d = g('date');
             if (!validDate($d))
                 err('Podaj poprawną datę');
-            $no = (int)g('lesson_no', 1);
+            $no = filter_var(g('lesson_no', 1), FILTER_VALIDATE_INT);
+            if ($no === false || $no < 1 || $no > 10)
+                err('Nieprawidłowy numer lekcji');
             $topic = trim(g('topic', ''));
             if ($topic === '')
                 err('Wpisz temat lekcji');
@@ -36,25 +40,41 @@ function route_journal($A) {
                 logit('DENIED', 'lesson_save');
                 err('To nie jest Twoja lekcja', 403);
             }
-            q('INSERT INTO lessons(assignment_id,date,lesson_no,topic) VALUES(?,?,?,?) ON CONFLICT(assignment_id,date,lesson_no) DO UPDATE SET topic=excluded.topic', [$a['id'], $d, $no, $topic]);
-            $lid = one('SELECT id FROM lessons WHERE assignment_id=? AND date=? AND lesson_no=?', [$a['id'], $d, $no])['id'];
-            foreach ((array)g('attendance', []) as $sid => $status) {
-                if (!in_array($status, ST))
+            $attendance = g('attendance', []);
+            if (!is_array($attendance))
+                err('Nieprawidłowa lista obecności');
+            $students = array_column(all('SELECT id,first,last FROM students WHERE class_id=?', [$a['class_id']]), null, 'id');
+            foreach ($attendance as $sid => $status) {
+                $studentId = filter_var($sid, FILTER_VALIDATE_INT);
+                if ($studentId === false || !isset($students[$studentId]))
+                    err('Lista obecności zawiera ucznia spoza klasy');
+                if (!in_array($status, ST, true))
                     err('Nieprawidłowy status');
-                $stu = one('SELECT * FROM students WHERE id=? AND class_id=?', [$sid, $a['class_id']]);
-                if (!$stu)
-                    continue;
-                $prev = one('SELECT status FROM attendance WHERE lesson_id=? AND student_id=?', [$lid, $sid])['status'] ?? null;
-                // zatwierdzone usprawiedliwienie obejmujące datę zamienia nieobecność na usprawiedliwioną
-                if ($status == 'nieobecny' && one("SELECT 1 FROM excuses WHERE student_id=? AND status='zatwierdzone' AND ? BETWEEN date_from AND date_to", [$sid, $d]))
-                    $status = 'usprawiedliwiony';
-                q('INSERT INTO attendance VALUES(?,?,?) ON CONFLICT(lesson_id,student_id) DO UPDATE SET status=excluded.status', [$lid, $sid, $status]);
-                if ($status == 'nieobecny' && $prev != 'nieobecny')
-                    foreach (all('SELECT parent_id FROM parent_links WHERE student_id=? AND restricted=0', [$sid]) as $p)
-                    notify($p['parent_id'], "Nieusprawiedliwiona nieobecność: {$stu['first']} {$stu['last']}, $d (lekcja $no).");
-    }
-    logit('lesson_save', "assignment {$a['id']} $d");
-out(['ok' => 1]);
+            }
+
+            $p = db();
+            $p->beginTransaction();
+            try {
+                q('INSERT INTO lessons(assignment_id,date,lesson_no,topic) VALUES(?,?,?,?) ON CONFLICT(assignment_id,date,lesson_no) DO UPDATE SET topic=excluded.topic', [$a['id'], $d, $no, $topic]);
+                $lid = one('SELECT id FROM lessons WHERE assignment_id=? AND date=? AND lesson_no=?', [$a['id'], $d, $no])['id'];
+                foreach ($attendance as $sid => $status) {
+                    $stu = $students[(int)$sid];
+                    $prev = one('SELECT status FROM attendance WHERE lesson_id=? AND student_id=?', [$lid, $sid])['status'] ?? null;
+                    if ($status == 'nieobecny' && one("SELECT 1 FROM excuses WHERE student_id=? AND status='zatwierdzone' AND ? BETWEEN date_from AND date_to", [$sid, $d]))
+                        $status = 'usprawiedliwiony';
+                    q('INSERT INTO attendance VALUES(?,?,?) ON CONFLICT(lesson_id,student_id) DO UPDATE SET status=excluded.status', [$lid, $sid, $status]);
+                    if ($status == 'nieobecny' && $prev != 'nieobecny')
+                        foreach (all('SELECT parent_id FROM parent_links WHERE student_id=? AND restricted=0', [$sid]) as $parent)
+                            notify($parent['parent_id'], "Nieusprawiedliwiona nieobecność: {$stu['first']} {$stu['last']}, $d (lekcja $no).");
+                }
+                logit('lesson_save', "assignment {$a['id']} $d");
+                $p->commit();
+            } catch (Throwable $e) {
+                if ($p->inTransaction())
+                    $p->rollBack();
+                throw $e;
+            }
+            out(['ok' => 1]);
 case 'excuse_submit' : need('rodzic');
 needStudent(g('student_id'));
 if (!validDate(g('from')) || !validDate(g('to')) || g('to') < g('from'))

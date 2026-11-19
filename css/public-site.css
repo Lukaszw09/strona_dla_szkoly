@@ -1,0 +1,366 @@
+#publicSchool:not([hidden]) {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  background: var(--color-background);
+}
+
+.public-header {
+  position: sticky;
+  z-index: 20;
+  top: 0;
+  display: flex;
+  min-height: 76px;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-6);
+  padding: 0.75rem max(1.5rem, calc((100vw - var(--content-width)) / 2));
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.school-brand {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: var(--space-3);
+  color: var(--color-ink);
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.school-brand:hover {
+  color: var(--color-link);
+}
+
+.school-brand-mark {
+  display: grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: var(--radius-control);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+}
+
+.school-nav {
+  display: flex;
+  width: auto;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: var(--space-1);
+  padding: 0;
+  border: 0;
+}
+
+.school-nav a {
+  padding: 0.6rem 0.75rem;
+  border-radius: var(--radius-control);
+  color: var(--color-muted);
+  font-size: 0.9rem;
+  font-weight: 560;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.school-nav a:hover {
+  background: var(--color-surface-soft);
+  color: var(--color-link);
+}
+
+.school-header-actions {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.school-header-actions button {
+  min-height: 40px;
+  font-size: 0.875rem;
+}
+
+.theme-toggle {
+  white-space: nowrap;
+}
+
+.public-main {
+  width: min(100%, var(--content-width));
+  min-height: calc(100vh - 9rem);
+  flex: 1;
+  margin: 0 auto;
+  padding: clamp(1.5rem, 4vw, 3rem) clamp(1.25rem, 3vw, 2.5rem) 4rem;
+}
+
+.school-hero {
+  display: grid;
+  min-height: min(42rem, calc(100svh - 10rem));
+  grid-template-columns: minmax(0, 1.5fr) minmax(15rem, 0.5fr);
+  align-items: center;
+  gap: clamp(2rem, 5vw, 5rem);
+  padding: clamp(2.25rem, 6vw, 5.5rem);
+  border-radius: var(--radius-panel);
+  background: var(--color-public-hero);
+}
+
+.school-hero-copy {
+  max-width: 58rem;
+}
+
+.school-hero h1 {
+  max-width: 13ch;
+  margin: 0.5rem 0 1.25rem;
+  font-size: clamp(2.75rem, 5.5vw, 5rem);
+  line-height: 1.02;
+}
+
+.school-kicker {
+  margin: 0 0 var(--space-3);
+  color: var(--color-link);
+  font-size: 0.9rem;
+  font-weight: 680;
+}
+
+.school-intro {
+  max-width: 45rem;
+  margin: 0;
+  color: var(--color-muted);
+  font-size: clamp(1.05rem, 1.5vw, 1.2rem);
+  line-height: 1.7;
+}
+
+.school-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-8);
+}
+
+.school-hero-link {
+  display: inline-flex;
+  min-height: 48px;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0.75rem 1.1rem;
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-control);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  font-weight: 680;
+  text-decoration: none;
+  transition:
+    background-color var(--duration-fast) var(--ease-ui),
+    border-color var(--duration-fast) var(--ease-ui),
+    transform var(--duration-fast) var(--ease-ui);
+}
+
+.school-hero-link:hover {
+  border-color: var(--color-primary-hover);
+  background: var(--color-primary-hover);
+  color: var(--color-on-primary);
+  transform: translateY(-1px);
+}
+
+.school-hero-actions button.sec {
+  min-height: 48px;
+  border-color: var(--color-border);
+  background: var(--color-surface);
+}
+
+.school-awards {
+  display: grid;
+  width: min(100%, 18rem);
+  justify-self: end;
+  gap: var(--space-3);
+}
+
+.school-award {
+  display: flex;
+  min-height: 7rem;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-1);
+  padding: var(--space-6);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+  color: var(--color-ink);
+  box-shadow: var(--shadow-card);
+}
+
+.school-award strong {
+  color: var(--color-link);
+  font-size: 1.05rem;
+}
+
+.school-award small {
+  color: var(--color-muted);
+  font-size: 0.9rem;
+}
+
+.school-section {
+  margin-top: clamp(3.5rem, 7vw, 5.5rem);
+  scroll-margin-top: 6rem;
+}
+
+.school-section-heading {
+  max-width: 52rem;
+  margin-bottom: var(--space-6);
+}
+
+.school-section > h2,
+.school-section-heading h2 {
+  margin-bottom: var(--space-3);
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+}
+
+.school-section > p:not(.school-kicker),
+.school-section-heading > p:last-child {
+  max-width: 54rem;
+  color: var(--color-muted);
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.school-section address {
+  max-width: 54rem;
+  color: var(--color-muted);
+  font-style: normal;
+  line-height: 1.7;
+}
+
+.school-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+  gap: var(--space-4);
+}
+
+.school-grid > .card,
+.school-section > .card {
+  padding: var(--space-6);
+}
+
+.school-grid > .card h3,
+.school-section > .card h3 {
+  margin: var(--space-4) 0 var(--space-2);
+}
+
+.school-grid > .card p,
+.school-section > .card p {
+  margin-bottom: 0;
+  color: var(--color-muted);
+}
+
+.school-grid img {
+  width: 100%;
+  max-height: 16rem;
+  aspect-ratio: 16 / 10;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+}
+
+.school-sport,
+.school-contact {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-8);
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-panel);
+  background: var(--color-surface);
+}
+
+.school-sport-list {
+  display: grid;
+  min-width: min(100%, 24rem);
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.school-sport-list li {
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius-control);
+  background: var(--color-surface-soft);
+  color: var(--color-ink);
+}
+
+.school-contact-details {
+  min-width: min(100%, 22rem);
+  font-style: normal;
+}
+
+.school-contact-details p {
+  margin: 0.5rem 0;
+}
+
+.school-contact-details a {
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.school-contact-details a:hover {
+  text-decoration: underline;
+}
+
+.school-source {
+  margin-top: var(--space-4);
+  color: var(--color-muted);
+  font-size: 0.875rem;
+}
+
+.school-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+  font-weight: 680;
+  text-decoration: none;
+}
+
+.school-link:hover {
+  text-decoration: underline;
+}
+
+.public-tools {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-6);
+  margin-top: var(--space-6);
+  padding: var(--space-6);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-panel);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
+}
+
+.public-tools form.row {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.school-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-6) max(1.5rem, calc((100vw - var(--content-width)) / 2));
+  border-top: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-muted);
+  font-size: 0.875rem;
+}
+
+.school-footer a {
+  white-space: nowrap;
+}

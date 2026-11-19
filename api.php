@@ -13,6 +13,10 @@ foreach (glob(__DIR__ . '/src/routes/*.php') as $file) {
 session_set_cookie_params(['samesite' => 'Lax', 'httponly' => true]);
 session_start();
 header('Content-Type: application/json; charset=utf-8');
+header('X-Content-Type-Options: nosniff');
+header('X-Frame-Options: SAMEORIGIN');
+header('Referrer-Policy: strict-origin-when-cross-origin');
+header('Permissions-Policy: geolocation=(), camera=(), microphone=()');
 
 $in = json_decode(file_get_contents('php://input'), true) ?: [];
 $A = $_GET['action'] ?? '';

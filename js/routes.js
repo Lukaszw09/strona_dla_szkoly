@@ -21,7 +21,30 @@ const V = {
   journal: ["Wydruk dziennika", ["nauczyciel", "wychowawca"], vJournal],
   reports: ["Raporty i dokumenty", ["admin", "dyrektor", "sekretariat", "wychowawca"], vReports],
   notif: ["Powiadomienia", ALL, vNotif],
+  school: ["O szkole", ALL, vSchool],
+  cms: ["CMS strony szkoły", ["admin", "sekretariat"], vCms],
+  messages: ["Komunikacja", ALL, vMessages],
+  training: ["Szkolenie", ALL, vTraining],
+  privacy: ["RODO i prywatność", ALL, vPrivacy],
 };
+const NAV_GROUPS = [
+  ["Moja praca", ["lesson", "grades", "schedule", "journal"]],
+  ["Frekwencja", ["missing", "excuses", "history", "stats"]],
+  ["Osoby i klasy", ["students", "classes", "teachers", "parents", "subjects", "assign"]],
+  ["Kontakt", ["notif", "messages"]],
+  ["Administracja", ["users", "log", "reports", "cms"]],
+  ["Szkoła i pomoc", ["school", "training", "privacy"]],
+];
+function animateEntry(target) {
+  const gsap = window.gsap;
+  if (!target || !gsap || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  gsap.killTweensOf(target);
+  gsap.fromTo(
+    target,
+    { autoAlpha: 0, y: 8 },
+    { autoAlpha: 1, y: 0, duration: 0.26, ease: "power2.out", clearProps: "transform,opacity,visibility" },
+  );
+}
 
 // ---------- logowanie i nawigacja ----------
 H.login = async (d) => {
@@ -32,8 +55,10 @@ H.demoLogin = (email) => H.login({ email, password: "haslo123" });
 H.logout = async () => {
   await api("logout");
   ME = null;
-  showLogin();
+  showSchoolHome();
 };
+H.showLogin = () => showLogin();
+H.showSchoolHome = () => showSchoolHome();
 H.showReset = () => {
   $("#resetBox").hidden = !$("#resetBox").hidden;
 };
@@ -46,29 +71,53 @@ H.resetDo = async (d) => {
   toast("Hasło zmienione – możesz się zalogować");
 };
 H.go = (a) => go(a);
+H.toggleTheme = () => setTheme(document.documentElement.dataset.theme === "dark" ? "light" : "dark", true);
 function head() {
   $("#who").textContent = `${ME.name} (${ME.role})${ME.unread ? ` · nowe powiadomienia: ${ME.unread}` : ""}`;
 }
 function showLogin() {
   $("#app").hidden = true;
+  $("#publicSchool").hidden = true;
   $("#login").hidden = false;
+  animateEntry($("#login .login-shell"));
+}
+async function showSchoolHome() {
+  $("#app").hidden = true;
+  $("#login").hidden = true;
+  $("#publicSchoolContent").innerHTML = await vSchool();
+  $("#publicSchool").hidden = false;
+  window.scrollTo(0, 0);
+  animateEntry($("#publicSchool .school-hero"));
 }
 function start(r) {
   ME = { ...r.user, unread: r.unread };
+  $("#publicSchoolContent").innerHTML = "";
+  $("#publicSchool").hidden = true;
   $("#login").hidden = true;
   $("#app").hidden = false;
   head();
   const keys = Object.keys(V).filter((k) => V[k][1].includes(ME.role));
-  $("#nav").innerHTML = keys
-    .map((k) => `<button data-c="go" data-a="${k}" id="n_${k}">${V[k][0]}</button>`)
+  $("#nav").innerHTML = NAV_GROUPS.map(([label, groupKeys]) => {
+    const visible = groupKeys.filter((k) => keys.includes(k));
+    if (!visible.length) return "";
+    return `<div class="nav-group"><span class="nav-section-label">${label}</span>${visible
+      .map((k) => `<button data-c="go" data-a="${k}" id="n_${k}">${V[k][0]}</button>`)
+      .join("")}</div>`;
+  })
     .join("");
   go(keys[0]);
 }
 async function go(k) {
   CUR = k;
-  document.querySelectorAll("nav button").forEach((b) => b.classList.toggle("on", b.id == "n_" + k));
+  document.querySelectorAll("#nav button").forEach((b) => {
+    const active = b.id === "n_" + k;
+    b.classList.toggle("on", active);
+    if (active) b.setAttribute("aria-current", "page");
+    else b.removeAttribute("aria-current");
+  });
   try {
     $("#main").innerHTML = await V[k][2]();
+    animateEntry($("#main"));
   } catch (e) {
     if (!e.error) console.error(e);
   }
@@ -93,6 +142,7 @@ document.addEventListener("click", async (e) => {
     if (!x.error) console.error(x);
   }
 });
+setTheme(initialTheme());
 api("me")
-  .then((r) => (r.user ? start(r) : showLogin()))
-  .catch(showLogin);
+  .then((r) => (r.user ? start(r) : showSchoolHome()))
+  .catch(showSchoolHome);

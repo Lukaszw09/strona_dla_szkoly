@@ -128,8 +128,8 @@ function route_school($A) {
         case 'schedule_save':
             need('admin', 'dyrektor', 'sekretariat');
             $w = (int)g('weekday');
-            $n = (int)g('lesson_no');
-            if ($w < 1 || $w > 5 || $n < 1 || $n > 10)
+            $n = filter_var(g('lesson_no'), FILTER_VALIDATE_INT);
+            if ($w < 1 || $w > 5 || $n === false || $n < 0 || $n > 10)
                 err('Nieprawidłowy dzień lub numer lekcji');
             $a = one('SELECT class_id,teacher_id FROM assignments WHERE id=?', [g('assignment_id')]);
             if (!$a)

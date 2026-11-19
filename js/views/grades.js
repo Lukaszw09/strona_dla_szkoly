@@ -14,7 +14,9 @@ H.showGrades = async (d) => {
     s.grades
       .map(
         (g) =>
-          `<span class="b" title="${esc(g.kind)} ${esc(g.date)}">${g.value}${g.kind == "roczna" ? " (r)" : g.kind == "śródroczna" ? " (ś)" : ""}</span>`,
+          `<span class="b" title="${esc(g.kind)} ${esc(g.date)}">${g.value}${g.kind == "roczna" ? " (r)" : g.kind == "śródroczna" ? " (ś)" : ""}</span>
+           <button type="button" class="sm sec" data-c="editGrade" data-a="${g.id}:${g.value}:${g.kind}:${s.id}">Edytuj</button>
+           <button type="button" class="sm bad" data-c="deleteGrade" data-a="${g.id}:${s.id}">Usuń</button>`,
       )
       .join(" ") || "–",
     `<form class="row" data-h="addGrade"><input type="hidden" name="student_id" value="${s.id}">
@@ -32,4 +34,21 @@ H.addGrade = async (d) => {
 H.addRemark = async (d) => {
   await api("remark_save", d);
   toast("Zapisano uwagę");
+};
+H.editGrade = async (a) => {
+  const [id,value,kind,studentId]=a.split(":");
+  const newValue=prompt("Nowa ocena (1-6)",value);
+  if(!newValue) return;
+  const n=Number(newValue);
+  if(!Number.isInteger(n)||n<1||n>6) return toast("Ocena musi być liczbą od 1 do 6",1);
+  await api("grade_update",{id,value:n,kind});
+  toast("Zmieniono ocenę");
+  H.showGrades({assignment_id:GRADE_CTX.assignment_id});
+};
+H.deleteGrade = async (a) => {
+  const [id]=a.split(":");
+  if(!confirm("Usunąć tę ocenę?")) return;
+  await api("grade_delete",{id});
+  toast("Usunięto ocenę");
+  H.showGrades({assignment_id:GRADE_CTX.assignment_id});
 };

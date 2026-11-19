@@ -36,7 +36,7 @@ function route_auth($A) {
                 q('INSERT INTO reset_tokens VALUES(?,?,?)', [$e, hash('sha256', $t), time()+3600]);
                 $m = "Reset hasła dla $e. Token: $t (ważny 1 godzinę)";
                 if (!@mail($e, 'Reset hasla', $m))
-                    file_put_contents(dirname(__DIR__, 2) . '/data/mail.log', date('c') . " $m\n", FILE_APPEND);
+                    file_put_contents(storageDir() . DIRECTORY_SEPARATOR . 'mail.log', date('c') . " $m\n", FILE_APPEND);
                 logit('RESET_REQUEST', $e);
             }
             out(['ok' => 1]);
