@@ -53,7 +53,7 @@ function route_auth($A) {
             out(['ok' => 1]);
         case 'users_list':
             need('admin');
-            out(all('SELECT id,email,role,name,locked FROM users ORDER BY role,name'));
+            out(all('SELECT u.id,u.email,u.role,u.name,u.locked,(SELECT s.id FROM students s WHERE s.user_id=u.id ORDER BY s.id LIMIT 1) student_id FROM users u ORDER BY u.role,u.name'));
         case 'user_save':
             need('admin', 'sekretariat');
             $role = g('role');
@@ -70,6 +70,16 @@ function route_auth($A) {
             if ($pw !== '' && strlen($pw) < 8)
                 err('Hasło musi mieć min. 8 znaków');
             $id = g('id');
+            $studentId = trim((string)g('student_id', ''));
+            if ($role === 'uczen') {
+                if ($studentId === '' || !ctype_digit($studentId))
+                    err('Wybierz ucznia, z którym połączyć konto');
+                $linkedStudent = one('SELECT user_id FROM students WHERE id=?', [$studentId]);
+                if (!$linkedStudent)
+                    err('Nie znaleziono wybranego ucznia', 404);
+                if ($linkedStudent['user_id'] && (int)$linkedStudent['user_id'] !== (int)$id)
+                    err('Ten uczeń ma już przypisane konto');
+            }
             try {
                 if ($id) {
                     $old = one('SELECT role FROM users WHERE id=?', [$id]);
@@ -90,6 +100,10 @@ function route_auth($A) {
                 }
             } catch (PDOException $e) {
                 err('Użytkownik z takim e-mailem już istnieje');
+            }
+            q('UPDATE students SET user_id=NULL WHERE user_id=?', [$id]);
+            if ($role === 'uczen') {
+                q('UPDATE students SET user_id=? WHERE id=?', [$id, $studentId]);
             }
             if (is_array(g('subjects'))) {
                 q('DELETE FROM teacher_subjects WHERE user_id=?', [$id]);

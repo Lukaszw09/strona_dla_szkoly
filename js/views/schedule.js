@@ -32,7 +32,7 @@ H.showPlan = async (d) => {
             .filter((x) => x.lesson_no == n && x.weekday == i + 1)
             .map(
               (x) =>
-                `${esc(x.subject)}<br><span class="muted">${esc(x.teacher)}</span> ${ed ? `<button type="button" class="plan-delete" data-c="delSlot" data-a="${esc(x.id)}" aria-label="Usuń lekcję: ${esc(x.subject)} (${esc(x.teacher)})" title="Usuń lekcję"><svg aria-hidden="true" focusable="false" viewBox="0 0 16 16"><path d="M3 4h10M6 4V2.8h4V4m1.5 0-.6 9H5.1l-.6-9m3 2v4m3-4v4" /></svg></button>` : ""}`,
+                `${esc(x.subject)}${x.group_name ? `<br><span class="plan-group">${esc(x.group_name)}</span>` : ""}<br><span class="muted">${esc(x.teacher)}</span> ${ed ? `<button type="button" class="plan-delete" data-c="delSlot" data-a="${esc(x.id)}" aria-label="Usuń lekcję: ${esc(x.subject)} (${esc(x.teacher)})" title="Usuń lekcję"><svg aria-hidden="true" focusable="false" viewBox="0 0 16 16"><path d="M3 4h10M6 4V2.8h4V4m1.5 0-.6 9H5.1l-.6-9m3 2v4m3-4v4" /></svg></button>` : ""}`,
             )
             .join("") || "",
       ),
@@ -40,7 +40,7 @@ H.showPlan = async (d) => {
   let f = "";
   if (ed) {
     const a = (await api("assignments_list")).filter((x) => x.class_id == d.class_id);
-    f = `<h3>Dodaj lekcję do planu</h3><form class="row" data-h="saveSlot"><label>Przedmiot<select name="assignment_id">${opt(a, "id", (x) => x.subject + " – " + x.teacher)}</select></label><label>Dzień<select name="weekday">${DAYS.map((x, i) => `<option value="${i + 1}">${x}</option>`).join("")}</select></label><label>Nr lekcji<input type="number" name="lesson_no" min="0" max="10" value="1" required></label><button>Dodaj do planu</button></form>`;
+    f = `<h3>Dodaj lekcję do planu</h3><p class="muted">Dla równoległych zajęć jednej klasy wpisz różne grupy (np. A i B). Nauczyciel nie może prowadzić dwóch zajęć w tym samym czasie.</p><form class="row" data-h="saveSlot"><label>Przedmiot<select name="assignment_id">${opt(a, "id", (x) => x.subject + " – " + x.teacher)}</select></label><label>Dzień<select name="weekday">${DAYS.map((x, i) => `<option value="${i + 1}">${x}</option>`).join("")}</select></label><label>Nr lekcji<input type="number" name="lesson_no" min="1" max="10" value="1" required></label><label>Grupa (opcjonalnie)<input name="group_name" maxlength="40" placeholder="np. Grupa A"></label><button>Dodaj do planu</button></form>`;
   }
   $("#plan").innerHTML = tbl(["Lekcja / godzina", ...DAYS], rows) + f;
 };

@@ -9,7 +9,7 @@ CREATE TABLE subjects(id INTEGER PRIMARY KEY,name TEXT UNIQUE NOT NULL);
 CREATE TABLE teacher_subjects(user_id INTEGER,subject_id INTEGER,PRIMARY KEY(user_id,subject_id));
 CREATE TABLE parent_links(id INTEGER PRIMARY KEY,parent_id INTEGER,student_id INTEGER,relation TEXT,contact TEXT,pickup INTEGER DEFAULT 1,restricted INTEGER DEFAULT 0,UNIQUE(parent_id,student_id));
 CREATE TABLE assignments(id INTEGER PRIMARY KEY,teacher_id INTEGER,class_id INTEGER,subject_id INTEGER,UNIQUE(teacher_id,class_id,subject_id));
-CREATE TABLE schedule(id INTEGER PRIMARY KEY,assignment_id INTEGER,weekday INTEGER,lesson_no INTEGER);
+CREATE TABLE schedule(id INTEGER PRIMARY KEY,assignment_id INTEGER,weekday INTEGER,lesson_no INTEGER,group_name TEXT NOT NULL DEFAULT '');
 CREATE TABLE lessons(id INTEGER PRIMARY KEY,assignment_id INTEGER,date TEXT,lesson_no INTEGER,topic TEXT,UNIQUE(assignment_id,date,lesson_no));
 CREATE TABLE attendance(lesson_id INTEGER,student_id INTEGER,status TEXT,PRIMARY KEY(lesson_id,student_id));
 CREATE TABLE excuses(id INTEGER PRIMARY KEY,student_id INTEGER,parent_id INTEGER,date_from TEXT,date_to TEXT,reason TEXT,status TEXT DEFAULT 'oczekuje',created TEXT);

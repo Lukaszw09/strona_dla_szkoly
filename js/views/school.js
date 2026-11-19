@@ -16,11 +16,15 @@ async function vSchool() {
   const nav=document.querySelector(".school-nav");
   if(nav) nav.innerHTML=cms.menu.map(m=>`<a href="#${esc(m.slug)}">${esc(m.title)}</a>`).join("");
   return `<section class="school-hero" id="about" aria-labelledby="school-title">
-    <div class="school-hero-copy"><p class="school-kicker">Zespół Szkół Techniczno-Informatycznych w Gliwicach</p>
-      <h1 id="school-title">${esc(about?.title || "Szkoła przyszłości")}</h1><p class="school-intro">${esc(about?.content || "")}</p>
-      <div class="school-hero-actions"><a class="school-hero-link" href="#offer">Poznaj kierunki <span aria-hidden="true">→</span></a>
-        <button class="sec" type="button" data-c="showLogin">Przejdź do dziennika</button></div></div>
-    <div class="school-awards"><span class="school-award"><strong>Złota Szkoła</strong><small>2026</small></span></div>
+    <div class="school-hero-copy"><p class="school-kicker">${esc(about?.title || "O szkole")}</p>
+      <h1 id="school-title">ZSTI Gliwice</h1><p class="school-intro">${esc(about?.content || "")}</p>
+      <div class="school-hero-actions"><a class="school-hero-link" href="#offer">Zobacz kierunki <span aria-hidden="true">→</span></a>
+        <button class="sec" type="button" data-c="showLogin">Otwórz dziennik</button></div></div>
+    <div class="school-hero-art" aria-hidden="true">
+      <div class="school-hero-art-top"><span>Zespół Szkół</span><span>Gliwice</span></div>
+      <div class="school-hero-art-mark">ZSTI</div>
+      <div class="school-hero-art-bottom"><span>Technika</span><span>Sport</span></div>
+    </div>
   </section>
   <section class="public-tools" aria-label="Wyszukiwarka i newsletter">
     <form class="row" data-h="publicSearch"><label>Szukaj na stronie<input name="q" minlength="2" required></label><button>Wyszukaj</button></form>

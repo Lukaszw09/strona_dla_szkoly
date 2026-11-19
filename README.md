@@ -28,6 +28,12 @@ Frekwencja w statystykach = (obecny + spóźniony) / wszystkie wpisy.
 - Osobna podstrona „Szkolenie” z krótkimi tutorialami dla każdej z 7 ról.
 - Komunikacja wewnętrzna oraz widok RODO z eksportem danych i historią zgód.
 - Migracja uczniów z JSON/CSV, zgłoszenia błędów i sugestii.
+- Pulpit rodzica/ucznia: wybór powiązanego dziecka, dzisiejszy plan, ostatnie oceny, frekwencja i uwagi; uprawnienia do danych dziecka są sprawdzane przez API.
+- Rodzice i uczniowie mogą przeglądać oceny i uwagi. Nowa ocena wysyła powiadomienie do ucznia i nieograniczonych opiekunów.
+- Konta zakłada administrator lub sekretariat; publiczna samodzielna rejestracja nie jest dostępna.
+- Dane demonstracyjne można bezpiecznie dodać do istniejącej bazy poleceniem `php scripts/seed_demo.php`. Tworzy oznaczoną klasę `DEMO - 1A`, przykładowe konta i rekordy w dostępnych modułach oraz po dwóch oznaczonych uczniów w każdej klasie. Seeder można uruchamiać wielokrotnie bez powielania danych; wszystkie sztuczne rekordy mają nazwę lub opis `DEMO`.
+- Konta demo: `demo.nauczyciel@szkola.local`, `demo.nauczyciel.grupa@szkola.local`, `demo.rodzic@szkola.local`, `demo.uczen@szkola.local` (hasło `demo12345`).
+- Przedmiot `pades` jest zmieniany na `Projektowanie aplikacji desktopowych` przy uruchomieniu seedera, o ile nazwa docelowa nie istnieje jeszcze w bazie.
 - Własne lekcje: zakładka „Lekcja i frekwencja” → „Dodaj własną lekcję” (zapis w bazie, opcjonalnie wpis do planu).
 - Oceny i uwagi (zakładka „Oceny i uwagi”), ocena zachowania (API `conduct_save`).
 - Raporty: TEST-29 świadectwo, TEST-30 arkusz ocen, TEST-31 zestawienie klasy, TEST-32 statystyki szkoły,
@@ -40,3 +46,4 @@ Frekwencja w statystykach = (obecny + spóźniony) / wszystkie wpisy.
   - `src/routes/` – akcje API pogrupowane tematycznie (auth, school, journal, grades, reports, export, custom_lessons)
   - `js/core.js` – narzędzia i stan, `js/views/*.js` – po jednym pliku na widok, `js/routes.js` – lista widoków, logowanie, nawigacja
 - Dane z `data/dziennik.sqlite` są zachowywane i przenoszone poza katalog publiczny; nie usuwaj ich, jeśli chcesz zachować plan i historię.
+- Testy: `php tests/smoke.php` oraz `php tests/auth_integration.php` (izolowana baza tymczasowa).

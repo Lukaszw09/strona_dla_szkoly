@@ -3,6 +3,7 @@
 const ALL = ["admin", "dyrektor", "sekretariat", "nauczyciel", "wychowawca", "rodzic", "uczen"];
 const STAFF = ["admin", "dyrektor", "sekretariat", "nauczyciel", "wychowawca"];
 const V = {
+  dashboard: ["Pulpit", ALL, vDashboard],
   lesson: ["Lekcja i frekwencja", ["nauczyciel", "wychowawca"], vLesson],
   missing: ["Braki we frekwencji", ["wychowawca", "dyrektor", "admin"], vMissing],
   excuses: ["Usprawiedliwienia", ["rodzic", "wychowawca", "dyrektor", "sekretariat", "admin"], vExcuses],
@@ -17,7 +18,7 @@ const V = {
   schedule: ["Plan lekcji", STAFF, vSchedule],
   users: ["Użytkownicy i role", ["admin"], vUsers],
   log: ["Logi dostępu", ["admin", "dyrektor"], vLog],
-  grades: ["Oceny i uwagi", ["nauczyciel", "wychowawca"], vGrades],
+  grades: ["Oceny i uwagi", ["nauczyciel", "wychowawca", "rodzic", "uczen"], vGrades],
   journal: ["Wydruk dziennika", ["nauczyciel", "wychowawca"], vJournal],
   reports: ["Raporty i dokumenty", ["admin", "dyrektor", "sekretariat", "wychowawca"], vReports],
   notif: ["Powiadomienia", ALL, vNotif],
@@ -28,6 +29,7 @@ const V = {
   privacy: ["RODO i prywatność", ALL, vPrivacy],
 };
 const NAV_GROUPS = [
+  ["Start", ["dashboard"]],
   ["Moja praca", ["lesson", "grades", "schedule", "journal"]],
   ["Frekwencja", ["missing", "excuses", "history", "stats"]],
   ["Osoby i klasy", ["students", "classes", "teachers", "parents", "subjects", "assign"]],
@@ -76,12 +78,14 @@ function head() {
   $("#who").textContent = `${ME.name} (${ME.role})${ME.unread ? ` · nowe powiadomienia: ${ME.unread}` : ""}`;
 }
 function showLogin() {
+  closeNav();
   $("#app").hidden = true;
   $("#publicSchool").hidden = true;
   $("#login").hidden = false;
   animateEntry($("#login .login-shell"));
 }
 async function showSchoolHome() {
+  closeNav();
   $("#app").hidden = true;
   $("#login").hidden = true;
   $("#publicSchoolContent").innerHTML = await vSchool();
@@ -90,6 +94,7 @@ async function showSchoolHome() {
   animateEntry($("#publicSchool .school-hero"));
 }
 function start(r) {
+  closeNav();
   ME = { ...r.user, unread: r.unread };
   $("#publicSchoolContent").innerHTML = "";
   $("#publicSchool").hidden = true;
@@ -109,6 +114,9 @@ function start(r) {
 }
 async function go(k) {
   CUR = k;
+  const currentView = $("#currentView");
+  if (currentView) currentView.textContent = V[k][0];
+  closeNav();
   document.querySelectorAll("#nav button").forEach((b) => {
     const active = b.id === "n_" + k;
     b.classList.toggle("on", active);
@@ -122,6 +130,21 @@ async function go(k) {
     if (!e.error) console.error(e);
   }
 }
+function closeNav(restoreFocus = false) {
+  $("#app").classList.remove("nav-open");
+  document.body.classList.remove("nav-open");
+  const toggle = $("#navToggle");
+  if (!toggle) return;
+  toggle.setAttribute("aria-expanded", "false");
+  if (restoreFocus) toggle.focus();
+}
+H.toggleNav = () => {
+  const open = !$("#app").classList.contains("nav-open");
+  $("#app").classList.toggle("nav-open", open);
+  document.body.classList.toggle("nav-open", open);
+  $("#navToggle").setAttribute("aria-expanded", String(open));
+  if (open) $("#nav button")?.focus();
+};
 document.addEventListener("submit", async (e) => {
   const h = e.target.dataset.h;
   if (!h) return;
@@ -141,6 +164,9 @@ document.addEventListener("click", async (e) => {
   } catch (x) {
     if (!x.error) console.error(x);
   }
+});
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && $("#app").classList.contains("nav-open")) closeNav(true);
 });
 setTheme(initialTheme());
 api("me")

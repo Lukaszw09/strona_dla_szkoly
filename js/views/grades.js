@@ -1,10 +1,45 @@
 "use strict";
 // ---------- oceny i uwagi ----------
 async function vGrades() {
+  if (is("rodzic", "uczen")) {
+    const students = await api("students_list");
+    if (!students.length) {
+      return `<section aria-labelledby="studentGradesTitle"><h2 id="studentGradesTitle">Oceny i uwagi</h2><p class="muted">Nie ma ucznia powiązanego z tym kontem.</p></section>`;
+    }
+    setTimeout(() => H.showStudentGrades({ student_id: students[0].id }), 0);
+    return `<section aria-labelledby="studentGradesTitle"><h2 id="studentGradesTitle">Oceny i uwagi</h2>
+      <form class="row" data-h="showStudentGrades"><label>Uczeń<select name="student_id">${opt(students, "id", (student) => student.last + " " + student.first + (student.class ? " (" + student.class + ")" : ""))}</select></label><button>Pokaż</button></form>
+      <div id="studentGradeBox" aria-live="polite"></div></section>`;
+  }
   const as = await api("my_assignments");
   return `<h2>Oceny i uwagi</h2>
  <form class="row" data-h="showGrades"><label>Klasa i przedmiot<select name="assignment_id">${opt(as, "id", (a) => a.class + " – " + a.subject)}</select></label><button>Pokaż uczniów</button></form><div id="gradeBox"></div>`;
 }
+H.showStudentGrades = async (d) => {
+  const result = await api("student_grades", { student_id: d.student_id });
+  const summary = Object.entries(result.finals).map(([subject, value]) => [esc(subject), value ?? "–"]);
+  const grades = result.grades.map((grade) => [
+    esc(grade.subject),
+    `<strong>${esc(grade.value)}</strong>`,
+    esc(grade.kind),
+    esc(grade.date || "–"),
+    esc(grade.teacher),
+  ]);
+  const remarks = result.remarks.map((remark) => [
+    esc(remark.date || "–"),
+    esc(remark.teacher),
+    esc(remark.text),
+  ]);
+  $("#studentGradeBox").innerHTML =
+    `<h3>Oceny: ${esc(result.student.first)} ${esc(result.student.last)}</h3>` +
+    tbl(["Przedmiot", "Ocena końcowa"], summary) +
+    tbl(
+      ["Przedmiot", "Ocena", "Rodzaj", "Data", "Nauczyciel"],
+      grades,
+    ) +
+    `<h3>Ostatnie uwagi</h3>` +
+    tbl(["Data", "Nauczyciel", "Treść"], remarks);
+};
 H.showGrades = async (d) => {
   const r = await api("grades_for_assignment", d);
   GRADE_CTX = { subject_id: r.subject_id, assignment_id: d.assignment_id };

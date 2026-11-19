@@ -4,12 +4,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>ZSTI Gliwice — szkoła i dziennik elektroniczny</title>
-    <link rel="stylesheet" href="css/tokens.css" />
-    <link rel="stylesheet" href="css/components.css" />
-    <link rel="stylesheet" href="css/public-site.css" />
-    <link rel="stylesheet" href="css/login.css" />
-    <link rel="stylesheet" href="css/app.css" />
-    <link rel="stylesheet" href="css/responsive.css" />
+    <meta name="theme-color" content="#183640" />
+    <link rel="stylesheet" href="css/school-ui.css" />
   </head>
   <body>
     <div id="publicSchool" hidden>
@@ -56,6 +52,7 @@
           </div>
           <h1 id="loginTitle">Zaloguj się</h1>
           <p class="login-intro">Wpisz dane swojego konta, aby przejść do dziennika.</p>
+          <p class="login-account-note">Nie masz konta? Poproś sekretariat o jego założenie.</p>
           <form data-h="login">
             <label>E-mail<input name="email" type="email" required autofocus /></label>
             <label>Hasło<input name="password" type="password" required /></label>
@@ -99,6 +96,18 @@
           <span class="school-brand-mark">ZSTI</span>
           <span class="app-brand-copy"><strong>Dziennik</strong><small>Gliwice · system szkolny</small></span>
         </a>
+        <div class="app-context" aria-live="polite">
+          <span>PRZESTRZEŃ SZKOLNA</span>
+          <strong id="currentView">Dziennik elektroniczny</strong>
+        </div>
+        <button
+          id="navToggle"
+          type="button"
+          class="sec nav-toggle"
+          data-c="toggleNav"
+          aria-controls="nav"
+          aria-expanded="false"
+        >Menu</button>
         <div class="app-account">
           <span id="who"></span>
           <button type="button" class="sec theme-toggle" data-c="toggleTheme" data-theme-toggle aria-pressed="false">Ciemny motyw</button>
@@ -136,6 +145,7 @@
     <script src="js/views/messages.js"></script>
     <script src="js/views/training.js"></script>
     <script src="js/views/privacy.js"></script>
+    <script src="js/views/dashboard.js"></script>
     <script src="js/routes.js"></script>
   </body>
 </html>

@@ -124,19 +124,22 @@ function route_school($A) {
             out(['ok' => 1]);
         case 'schedule_list':
             need('admin', 'dyrektor', 'sekretariat', 'nauczyciel', 'wychowawca');
-            out(all('SELECT sc.id,sc.weekday,sc.lesson_no,s.name subject,u.name teacher FROM schedule sc JOIN assignments a ON a.id=sc.assignment_id JOIN subjects s ON s.id=a.subject_id JOIN users u ON u.id=a.teacher_id WHERE a.class_id=? ORDER BY sc.lesson_no,sc.weekday', [g('class_id')]));
+            out(all('SELECT sc.id,sc.weekday,sc.lesson_no,sc.group_name,s.name subject,u.name teacher FROM schedule sc JOIN assignments a ON a.id=sc.assignment_id JOIN subjects s ON s.id=a.subject_id JOIN users u ON u.id=a.teacher_id WHERE a.class_id=? ORDER BY sc.lesson_no,sc.weekday,sc.group_name,s.name', [g('class_id')]));
         case 'schedule_save':
             need('admin', 'dyrektor', 'sekretariat');
             $w = (int)g('weekday');
             $n = filter_var(g('lesson_no'), FILTER_VALIDATE_INT);
-            if ($w < 1 || $w > 5 || $n === false || $n < 0 || $n > 10)
+            $groupName = trim((string)g('group_name', ''));
+            if ($w < 1 || $w > 5 || $n === false || $n < 1 || $n > 10)
                 err('Nieprawidłowy dzień lub numer lekcji');
+            if (mb_strlen($groupName) > 40)
+                err('Nazwa grupy może mieć maksymalnie 40 znaków');
             $a = one('SELECT class_id,teacher_id FROM assignments WHERE id=?', [g('assignment_id')]);
             if (!$a)
                 err('Wybierz przydział');
-            if (one('SELECT 1 FROM schedule sc JOIN assignments x ON x.id=sc.assignment_id WHERE sc.weekday=? AND sc.lesson_no=? AND (x.class_id=? OR x.teacher_id=?)', [$w, $n, $a['class_id'], $a['teacher_id']]))
-                err('Ta godzina jest już zajęta (klasa lub nauczyciel)');
-            q('INSERT INTO schedule(assignment_id,weekday,lesson_no) VALUES(?,?,?)', [g('assignment_id'), $w, $n]);
+            if (one("SELECT 1 FROM schedule sc JOIN assignments x ON x.id=sc.assignment_id WHERE sc.weekday=? AND sc.lesson_no=? AND (x.teacher_id=? OR (x.class_id=? AND (sc.group_name='' OR ?='' OR sc.group_name=?)))", [$w, $n, $a['teacher_id'], $a['class_id'], $groupName, $groupName]))
+                err('Ta godzina jest już zajęta przez nauczyciela lub tę samą grupę klasy');
+            q('INSERT INTO schedule(assignment_id,weekday,lesson_no,group_name) VALUES(?,?,?,?)', [g('assignment_id'), $w, $n, $groupName]);
             out(['ok' => 1]);
         case 'schedule_delete':
             need('admin', 'dyrektor', 'sekretariat');

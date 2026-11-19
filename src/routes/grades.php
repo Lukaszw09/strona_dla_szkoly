@@ -21,9 +21,66 @@ function act_grade_save() {
         logit('DENIED', 'grade_save ' . $studentId);
         err('Nie uczysz tego przedmiotu w klasie ucznia', 403);
     }
-    q("INSERT INTO grades(student_id, subject_id, teacher_id, value, kind, date) VALUES(?,?,?,?,?,date('now'))", [$studentId, $subjectId, $U['id'], $value, $kind]);
-    logit('grade_save', "$studentId/$subjectId=$value");
+    $subject = one('SELECT name FROM subjects WHERE id=?', [$subjectId]);
+    $p = db();
+    $p->beginTransaction();
+    try {
+        q("INSERT INTO grades(student_id, subject_id, teacher_id, value, kind, date) VALUES(?,?,?,?,?,date('now'))", [$studentId, $subjectId, $U['id'], $value, $kind]);
+        $message = "Nowa ocena z {$subject['name']} dla {$student['first']} {$student['last']}.";
+        foreach (all('SELECT parent_id FROM parent_links WHERE student_id=? AND restricted=0', [$studentId]) as $parent) {
+            notify($parent['parent_id'], $message);
+        }
+        if ($student['user_id']) {
+            notify($student['user_id'], $message);
+        }
+        logit('grade_save', "$studentId/$subjectId=$value");
+        $p->commit();
+    } catch (Throwable $e) {
+        if ($p->inTransaction()) {
+            $p->rollBack();
+        }
+        throw $e;
+    }
     out(['ok' => 1]);
+}
+
+function act_student_grades() {
+    need('rodzic', 'uczen');
+    $studentId = (int)g('student_id');
+    needStudent($studentId);
+    $student = studentRow($studentId);
+    $grades = all('SELECT g.value,g.kind,g.date,s.name subject,u.name teacher FROM grades g JOIN subjects s ON s.id=g.subject_id JOIN users u ON u.id=g.teacher_id WHERE g.student_id=? ORDER BY s.name,g.date DESC,g.id DESC', [$studentId]);
+    $remarks = all('SELECT r.text,r.date,u.name teacher FROM remarks r JOIN users u ON u.id=r.teacher_id WHERE r.student_id=? ORDER BY r.date DESC,r.id DESC LIMIT 10', [$studentId]);
+    $summary = studentSummary($studentId);
+    logit('student_grades', (string)$studentId);
+    out([
+        'student' => ['first' => $student['first'], 'last' => $student['last']],
+        'grades' => $grades,
+        'finals' => $summary['finals'],
+        'remarks' => $remarks,
+    ]);
+}
+
+function act_family_dashboard() {
+    need('rodzic', 'uczen');
+    $studentId = (int)g('student_id');
+    needStudent($studentId);
+    $student = studentRow($studentId);
+    $weekday = (int)date('N');
+    $schedule = $weekday <= 5
+        ? all('SELECT sc.lesson_no,sc.group_name,s.name subject,u.name teacher FROM schedule sc JOIN assignments a ON a.id=sc.assignment_id JOIN subjects s ON s.id=a.subject_id JOIN users u ON u.id=a.teacher_id WHERE a.class_id=? AND sc.weekday=? ORDER BY sc.lesson_no,sc.group_name,s.name', [$student['class_id'], $weekday])
+        : [];
+    $attendance = all('SELECT l.date,l.lesson_no,s.name subject,a.status FROM attendance a JOIN lessons l ON l.id=a.lesson_id JOIN assignments x ON x.id=l.assignment_id JOIN subjects s ON s.id=x.subject_id WHERE a.student_id=? ORDER BY l.date DESC,l.lesson_no DESC LIMIT 5', [$studentId]);
+    $grades = all('SELECT g.value,g.kind,g.date,s.name subject FROM grades g JOIN subjects s ON s.id=g.subject_id WHERE g.student_id=? ORDER BY g.date DESC,g.id DESC LIMIT 5', [$studentId]);
+    $remarks = all('SELECT r.text,r.date,u.name teacher FROM remarks r JOIN users u ON u.id=r.teacher_id WHERE r.student_id=? ORDER BY r.date DESC,r.id DESC LIMIT 5', [$studentId]);
+    logit('family_dashboard', (string)$studentId);
+    out([
+        'student' => ['first' => $student['first'], 'last' => $student['last'], 'class' => $student['class']],
+        'schedule' => $schedule,
+        'attendance' => $attendance,
+        'grades' => $grades,
+        'remarks' => $remarks,
+    ]);
 }
 
 function act_grade_delete() {

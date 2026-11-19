@@ -1,0 +1,4 @@
+INFORMATOR DEMONSTRACYJNY
+
+Ten plik zawiera wyłącznie przykładową treść do testowania listy dokumentów.
+Nie jest oficjalnym dokumentem szkoły.

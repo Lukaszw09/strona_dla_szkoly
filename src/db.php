@@ -77,6 +77,10 @@ function ensureAppSchema($p) {
             $p->exec($tableSql);
         }
     }
+    $scheduleColumns = array_column($p->query('PRAGMA table_info(schedule)')->fetchAll(), 'name');
+    if (!in_array('group_name', $scheduleColumns, true)) {
+        $p->exec("ALTER TABLE schedule ADD COLUMN group_name TEXT NOT NULL DEFAULT ''");
+    }
     $count = (int)$p->query("SELECT COUNT(*) c FROM cms_sections")->fetch()['c'];
     if (!$count) {
         $p->exec("INSERT INTO cms_sections(slug,title,content,section_order,published) VALUES

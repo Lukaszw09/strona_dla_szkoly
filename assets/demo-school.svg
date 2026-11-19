@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-labelledby="title description">
+  <title id="title">Ilustracja demonstracyjna szkoły</title>
+  <desc id="description">Abstrakcyjna grafika budynku szkoły z podpisem DEMO.</desc>
+  <rect width="1200" height="800" fill="#e9efec"/>
+  <path d="M0 590h1200v210H0z" fill="#d3ded9"/>
+  <path d="M190 590V335l410-190 410 190v255z" fill="#245c68"/>
+  <path d="M525 590V420h150v170" fill="#183640"/>
+  <g fill="#f2f4f1">
+    <path d="M275 380h110v95H275zM445 300h110v95H445zM645 300h110v95H645zM815 380h110v95H815z"/>
+  </g>
+  <path d="M560 145h80V70h-80z" fill="#e1b45b"/>
+  <text x="600" y="700" fill="#183640" font-family="Arial,sans-serif" font-size="54" font-weight="700" text-anchor="middle">MATERIAŁ DEMONSTRACYJNY</text>
+</svg>
