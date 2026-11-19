@@ -1,336 +1,348 @@
-@media (max-width: 1024px) {
-  #app #nav {
-    width: 14.5rem;
-    flex-basis: 14.5rem;
-  }
-
-  .school-hero {
-    min-height: 34rem;
-    gap: var(--space-8);
-    padding: clamp(2rem, 5vw, 4rem);
-  }
-}
-
-@media (max-width: 900px) {
+@media (max-width: 1080px) {
   .public-header {
-    gap: var(--space-3) var(--space-4);
     flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.65rem 1rem;
+    padding-inline: 1.5rem;
   }
 
   .school-nav {
     order: 3;
     width: 100%;
-    overflow-x: auto;
+    justify-content: center;
+    border-top: 1px solid var(--nav-line);
+  }
+
+  .school-hero {
+    min-height: 38rem;
+    grid-template-columns: minmax(0, 1.25fr) minmax(12rem, 0.75fr);
+    padding: clamp(2rem, 5vw, 4rem);
+  }
+
+  #app #nav {
+    gap: 0.15rem;
+  }
+}
+
+@media (max-width: 760px) {
+  .public-header {
+    position: relative;
+    padding: 0.8rem 1rem 0;
   }
 
   .school-header-actions {
     margin-left: auto;
   }
 
-  .school-hero {
-    min-height: 0;
-    grid-template-columns: minmax(0, 1fr);
+  .school-header-actions button {
+    padding-inline: 0.65rem;
+    font-size: 0.78rem;
   }
 
-  .school-awards {
-    width: 100%;
-    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
-  }
-
-  .login-shell {
-    min-height: 0;
-    grid-template-columns: minmax(15rem, 0.72fr) minmax(0, 1.28fr);
-  }
-
-  .login {
-    padding: 2rem;
-  }
-}
-
-@media (max-width: 760px) {
-  #app > header.app-header {
-    position: relative;
-    gap: var(--space-3);
-    flex-wrap: wrap;
-    padding: var(--space-3) var(--space-4);
-  }
-
-  .app-account {
-    width: 100%;
-    gap: var(--space-2);
-  }
-
-  #who {
-    min-width: 0;
-    max-width: none;
-    flex: 1;
-    overflow-wrap: anywhere;
-  }
-
-  #app .layout {
-    min-height: calc(100vh - 7rem);
-    flex-direction: column;
-  }
-
-  #app #nav {
-    position: sticky;
-    z-index: 10;
-    top: 0;
-    width: 100%;
-    height: auto;
-    flex: 0 0 auto;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    gap: var(--space-1);
+  .school-nav {
+    justify-content: flex-start;
+    gap: 0.1rem;
     overflow-x: auto;
-    padding: var(--space-2) var(--space-3);
-    border-right: 0;
-    border-bottom: 1px solid var(--color-nav-border);
+    padding: 0.35rem 0 0.2rem;
     scrollbar-width: thin;
   }
 
-  #app #nav::before,
-  #app #nav .nav-section-label {
-    display: none;
+  .school-nav a {
+    min-height: 42px;
+    padding-inline: 0.6rem;
   }
 
-  #app #nav .nav-group {
-    display: contents;
+  .public-main {
+    padding: 0 1rem 2.5rem;
   }
 
-  #app #nav button {
-    width: auto;
-    min-width: max-content;
-    min-height: 44px;
-    padding: 0.625rem 0.8rem;
-  }
-
-  #app #nav button.sm,
-  #app #main button.sm {
-    min-height: 44px;
-  }
-
-  #app #nav button.on::before {
-    top: auto;
-    right: 0.65rem;
-    bottom: 0;
-    left: 0.65rem;
-    width: auto;
-    height: 3px;
-    border-radius: var(--radius-pill) var(--radius-pill) 0 0;
-  }
-
-  #app #main {
-    width: 100%;
-    padding: 1.5rem 1.25rem 3rem;
-  }
-
-  .login-shell {
+  .school-hero {
+    min-height: 0;
     grid-template-columns: 1fr;
+    gap: 1.25rem;
+    padding: clamp(1.75rem, 7vw, 3.25rem);
   }
 
-  .login-aside {
-    min-height: 20rem;
+  .school-hero h1 {
+    max-width: 11ch;
+    font-size: clamp(3.3rem, 13vw, 5.8rem);
   }
 
-  .login-aside-copy h2 {
-    font-size: clamp(2.4rem, 8vw, 3.2rem);
+  .school-awards {
+    min-height: 10rem;
+    justify-content: flex-start;
   }
 
-  .login-toolbar {
-    margin-bottom: var(--space-8);
+  .school-award {
+    width: 9rem;
+    padding: 1.2rem;
   }
 
-  .school-footer {
-    align-items: flex-start;
-    flex-direction: column;
-    padding: var(--space-4) 1.25rem;
+  .school-award::before {
+    inset: 0.55rem;
   }
-}
 
-@media (max-width: 600px) {
+  .school-award strong {
+    font-size: 1.3rem;
+  }
+
   .public-tools {
-    grid-template-columns: minmax(0, 1fr);
-    padding: var(--space-4);
+    grid-template-columns: 1fr;
+    gap: 1.4rem;
+    margin: 1rem auto 2rem;
+    padding: 1.25rem;
   }
 
   .public-tools form.row {
     align-items: stretch;
     flex-direction: column;
   }
-}
 
-@media (max-width: 520px) {
-  .app-brand .school-brand-mark {
-    width: 2.5rem;
-    height: 2.5rem;
+  .public-tools form.row > * {
+    width: 100%;
   }
 
-  .app-account button {
-    min-height: 42px;
-    padding-inline: 0.65rem;
-    font-size: 0.82rem;
+  .public-tools form.row > label {
+    min-width: 0;
+  }
+
+  .school-section,
+  .school-section:nth-of-type(even) {
+    padding: 3.2rem 0.25rem;
+  }
+
+  .school-section#sport {
+    padding: 3rem 1.25rem;
+  }
+
+  .school-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .school-sport-list {
+    grid-template-columns: 1fr;
+  }
+
+  .school-footer {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 1.5rem 1.25rem;
+  }
+
+  #login {
+    padding: 0;
+  }
+
+  .login-shell {
+    width: min(100%, 46rem);
+    min-height: 100svh;
+    grid-template-columns: 1fr;
+    margin: 0 auto;
+  }
+
+  .login-aside {
+    min-height: 19rem;
+    padding: 1.5rem;
+  }
+
+  .login-aside-copy {
+    margin: 2.3rem 0 1.4rem;
+  }
+
+  .login-aside-copy h2 {
+    max-width: 12ch;
+    font-size: clamp(2.7rem, 10vw, 4rem);
+  }
+
+  .login {
+    width: 100%;
+    padding: 1.75rem 1.5rem;
+  }
+
+  .login-toolbar {
+    margin-bottom: 2rem;
+  }
+
+  #app > header.app-header {
+    min-height: 4rem;
+    gap: 0.5rem;
+    padding: 0.55rem 0.85rem;
+  }
+
+  .app-brand .school-brand-mark {
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+
+  .app-brand-copy small {
+    display: none;
+  }
+
+  .app-account {
+    gap: 0.35rem;
+  }
+
+  #who {
+    max-width: 25vw;
+    font-size: 0.72rem;
+  }
+
+  #app > header button.sec {
+    min-height: 36px;
+    padding: 0.4rem 0.55rem;
+    font-size: 0.73rem;
+  }
+
+  #app #nav {
+    position: sticky;
+    top: 4rem;
+    display: flex;
+    min-height: 50px;
+    flex-wrap: nowrap;
+    gap: 0.25rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 0.4rem 0.75rem;
+    scrollbar-width: thin;
+  }
+
+  #app #nav .nav-group {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 0.2rem;
+  }
+
+  #app #nav .nav-section-label {
+    display: none;
+  }
+
+  #app #nav button {
+    min-height: 38px;
+    padding: 0.45rem 0.6rem;
+    font-size: 0.79rem;
   }
 
   #app #main {
-    padding-inline: 1rem;
+    padding: 1.5rem 1rem 2.5rem;
   }
 
-  #main > form.row {
-    width: 100%;
+  #app #main form.row {
     align-items: stretch;
     flex-direction: column;
   }
 
-  #main > form.row > label,
-  form.row > label {
+  #app #main form.row > label {
     width: 100%;
     min-width: 0;
   }
 
-  .login-shell {
+  #app #main form.row > button {
     width: 100%;
-    min-height: 100vh;
-    border: 0;
-    border-radius: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .school-brand {
+    gap: 0.55rem;
+    font-size: 0.86rem;
   }
 
-  #login:not([hidden]) {
-    display: block;
-    padding: 0;
-  }
-
-  .login-aside {
-    min-height: 16rem;
-    padding: 1.5rem;
-  }
-
-  .login-aside-copy h2 {
-    margin: 0.5rem 0;
-    font-size: 2.3rem;
-  }
-
-  .login-aside-copy > p:last-child {
-    margin-bottom: 0;
-  }
-
-  .login {
-    padding: 1.5rem;
-  }
-
-  .demo-accounts {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .demo-heading {
-    align-items: flex-start;
-    flex-direction: column;
+  .school-brand-mark {
+    width: 2.35rem;
+    height: 2.35rem;
   }
 
   .school-header-actions {
-    gap: var(--space-1);
+    gap: 0.35rem;
   }
 
   .school-header-actions button {
-    padding-inline: 0.65rem;
-    font-size: 0.8rem;
+    min-height: 38px;
+    padding-inline: 0.5rem;
+    font-size: 0.72rem;
   }
 
-  .public-main {
-    padding: 1rem 0.75rem 3rem;
-  }
-
-  .school-hero {
-    gap: var(--space-6);
-    padding: 1.5rem;
-    border-radius: var(--radius-card);
-  }
-
-  .school-hero h1 {
-    max-width: 12ch;
-    font-size: clamp(2.45rem, 11vw, 3.5rem);
+  .school-nav a {
+    font-size: 0.82rem;
   }
 
   .school-hero-actions {
     align-items: stretch;
     flex-direction: column;
-    margin-top: var(--space-6);
   }
 
   .school-hero-actions > * {
     width: 100%;
   }
 
-  .school-sport,
-  .school-contact {
-    align-items: stretch;
-    flex-direction: column;
-    gap: var(--space-4);
-    padding: var(--space-4);
-  }
-
-  .school-sport-list,
+  .school-grid,
   .school-contact-details {
-    min-width: 0;
+    grid-template-columns: 1fr;
   }
 
-  .school-footer a {
-    white-space: normal;
+  .school-grid img {
+    height: 13rem;
   }
 
-  #toast {
-    right: var(--space-3);
-    bottom: var(--space-3);
-    max-width: calc(100vw - 1.5rem);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
+  .login-shell {
+    min-height: 100svh;
   }
 
-  *,
-  *::before,
-  *::after {
-    scroll-behavior: auto !important;
-    transition-duration: 0.01ms !important;
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
+  .login-aside {
+    min-height: 17rem;
+    padding: 1.2rem;
   }
 
-  button:active,
-  .school-hero-link:hover {
-    transform: none;
-  }
-}
-
-@media print {
-  #app > header,
-  #app #nav,
-  .public-header,
-  .noprint,
-  #toast {
-    display: none !important;
+  .login-aside-copy {
+    margin: 1.8rem 0 1rem;
   }
 
-  #app .layout {
-    display: block;
+  .login-aside-copy h2 {
+    font-size: 2.7rem;
+  }
+
+  .login {
+    padding: 1.2rem;
+  }
+
+  .login-toolbar {
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+  }
+
+  .demo-accounts {
+    grid-template-columns: 1fr;
+  }
+
+  .demo-accounts button {
+    width: 100%;
+  }
+
+  #who {
+    display: none;
+  }
+
+  #app > header.app-header {
+    padding-inline: 0.65rem;
+  }
+
+  #app > header button.sec {
+    padding-inline: 0.45rem;
+    font-size: 0.69rem;
   }
 
   #app #main {
-    width: 100%;
-    max-width: none;
-    padding: 0;
+    padding-inline: 0.8rem;
   }
 
-  .tw {
-    overflow: visible;
-    border: 0;
-    box-shadow: none;
+  #app #main > form.row {
+    padding: 0.8rem 0;
   }
 
-  table {
-    min-width: 0;
+  #toast {
+    right: 0.75rem;
+    bottom: 0.75rem;
+    max-width: calc(100vw - 1.5rem);
   }
 }
