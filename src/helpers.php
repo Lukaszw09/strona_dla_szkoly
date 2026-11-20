@@ -76,7 +76,10 @@ function isHomeroomOf($sid) {
     return $s && in_array($s['class_id'], homeIds());
 }
 function validDate($d) {
-    return is_string($d) && preg_match('/^\d{4}-\d{2}-\d{2}$/', $d) && strtotime($d);
+    if (!is_string($d) || !preg_match('/^\d{4}-\d{2}-\d{2}$/', $d))
+        return false;
+    $date = DateTimeImmutable::createFromFormat('!Y-m-d', $d);
+    return $date !== false && $date->format('Y-m-d') === $d;
 }
 function meOut() {
     global $U;

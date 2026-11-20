@@ -1,10 +1,45 @@
 "use strict";
 // ---------- oceny i uwagi ----------
 async function vGrades() {
+  if (is("rodzic", "uczen")) {
+    const students = await api("students_list");
+    if (!students.length) {
+      return `<section aria-labelledby="studentGradesTitle"><h2 id="studentGradesTitle">Oceny i uwagi</h2><p class="muted">Nie ma ucznia powiązanego z tym kontem.</p></section>`;
+    }
+    setTimeout(() => H.showStudentGrades({ student_id: students[0].id }), 0);
+    return `<section aria-labelledby="studentGradesTitle"><h2 id="studentGradesTitle">Oceny i uwagi</h2>
+      <form class="row" data-h="showStudentGrades"><label>Uczeń<select name="student_id">${opt(students, "id", (student) => student.last + " " + student.first + (student.class ? " (" + student.class + ")" : ""))}</select></label><button>Pokaż</button></form>
+      <div id="studentGradeBox" aria-live="polite"></div></section>`;
+  }
   const as = await api("my_assignments");
   return `<h2>Oceny i uwagi</h2>
  <form class="row" data-h="showGrades"><label>Klasa i przedmiot<select name="assignment_id">${opt(as, "id", (a) => a.class + " – " + a.subject)}</select></label><button>Pokaż uczniów</button></form><div id="gradeBox"></div>`;
 }
+H.showStudentGrades = async (d) => {
+  const result = await api("student_grades", { student_id: d.student_id });
+  const summary = Object.entries(result.finals).map(([subject, value]) => [esc(subject), value ?? "–"]);
+  const grades = result.grades.map((grade) => [
+    esc(grade.subject),
+    `<strong>${esc(grade.value)}</strong>`,
+    esc(grade.kind),
+    esc(grade.date || "–"),
+    esc(grade.teacher),
+  ]);
+  const remarks = result.remarks.map((remark) => [
+    esc(remark.date || "–"),
+    esc(remark.teacher),
+    esc(remark.text),
+  ]);
+  $("#studentGradeBox").innerHTML =
+    `<h3>Oceny: ${esc(result.student.first)} ${esc(result.student.last)}</h3>` +
+    tbl(["Przedmiot", "Ocena końcowa"], summary) +
+    tbl(
+      ["Przedmiot", "Ocena", "Rodzaj", "Data", "Nauczyciel"],
+      grades,
+    ) +
+    `<h3>Ostatnie uwagi</h3>` +
+    tbl(["Data", "Nauczyciel", "Treść"], remarks);
+};
 H.showGrades = async (d) => {
   const r = await api("grades_for_assignment", d);
   GRADE_CTX = { subject_id: r.subject_id, assignment_id: d.assignment_id };
@@ -14,7 +49,9 @@ H.showGrades = async (d) => {
     s.grades
       .map(
         (g) =>
-          `<span class="b" title="${esc(g.kind)} ${esc(g.date)}">${g.value}${g.kind == "roczna" ? " (r)" : g.kind == "śródroczna" ? " (ś)" : ""}</span>`,
+          `<span class="b" title="${esc(g.kind)} ${esc(g.date)}">${g.value}${g.kind == "roczna" ? " (r)" : g.kind == "śródroczna" ? " (ś)" : ""}</span>
+           <button type="button" class="sm sec" data-c="editGrade" data-a="${g.id}:${g.value}:${g.kind}:${s.id}">Edytuj</button>
+           <button type="button" class="sm bad" data-c="deleteGrade" data-a="${g.id}:${s.id}">Usuń</button>`,
       )
       .join(" ") || "–",
     `<form class="row" data-h="addGrade"><input type="hidden" name="student_id" value="${s.id}">
@@ -32,4 +69,21 @@ H.addGrade = async (d) => {
 H.addRemark = async (d) => {
   await api("remark_save", d);
   toast("Zapisano uwagę");
+};
+H.editGrade = async (a) => {
+  const [id,value,kind,studentId]=a.split(":");
+  const newValue=prompt("Nowa ocena (1-6)",value);
+  if(!newValue) return;
+  const n=Number(newValue);
+  if(!Number.isInteger(n)||n<1||n>6) return toast("Ocena musi być liczbą od 1 do 6",1);
+  await api("grade_update",{id,value:n,kind});
+  toast("Zmieniono ocenę");
+  H.showGrades({assignment_id:GRADE_CTX.assignment_id});
+};
+H.deleteGrade = async (a) => {
+  const [id]=a.split(":");
+  if(!confirm("Usunąć tę ocenę?")) return;
+  await api("grade_delete",{id});
+  toast("Usunięto ocenę");
+  H.showGrades({assignment_id:GRADE_CTX.assignment_id});
 };

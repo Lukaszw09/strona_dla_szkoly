@@ -68,3 +68,30 @@ const fill = (f, o) => {
   f.scrollIntoView({ block: "center" });
 };
 const checked = (f, n) => [...f.querySelectorAll(`[name=${n}]:checked`)].map((x) => x.value);
+const THEME_KEY = "zsti-dziennik-theme";
+function setTheme(theme, persist = false) {
+  const selected = theme === "dark" ? "dark" : "light";
+  document.documentElement.dataset.theme = selected;
+  document.querySelectorAll("[data-theme-toggle]").forEach((button) => {
+    const dark = selected === "dark";
+    button.textContent = dark ? "Jasny motyw" : "Ciemny motyw";
+    button.setAttribute("aria-label", dark ? "Włącz jasny motyw" : "Włącz ciemny motyw");
+    button.setAttribute("aria-pressed", String(dark));
+  });
+  if (persist) {
+    try {
+      localStorage.setItem(THEME_KEY, selected);
+    } catch (e) {
+      console.warn("Nie udało się zapisać ustawienia motywu.", e);
+    }
+  }
+}
+function initialTheme() {
+  try {
+    const saved = localStorage.getItem(THEME_KEY);
+    if (saved === "dark" || saved === "light") return saved;
+  } catch (e) {
+    console.warn("Nie udało się odczytać ustawienia motywu.", e);
+  }
+  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+}

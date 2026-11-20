@@ -3,58 +3,124 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Dziennik elektroniczny – Liceum Ogólnokształcące</title>
-    <link rel="stylesheet" href="style.css" />
+    <title>ZSTI Gliwice — szkoła i dziennik elektroniczny</title>
+    <meta name="theme-color" content="#183640" />
+    <link rel="stylesheet" href="css/school-ui.css" />
   </head>
   <body>
+    <div id="publicSchool" hidden>
+      <header class="public-header">
+        <a class="school-brand" href="#about" aria-label="ZSTI Gliwice — strona główna">
+          <span class="school-brand-mark">ZSTI</span>
+          <span>Gliwice</span>
+        </a>
+        <nav class="school-nav" aria-label="Nawigacja po stronie szkoły">
+          <a href="#about">Szkoła</a>
+          <a href="#offer">Kierunki</a>
+          <a href="#sport">Sport</a>
+          <a href="#contact">Kontakt</a>
+        </nav>
+        <div class="school-header-actions">
+          <button type="button" class="sec theme-toggle" data-c="toggleTheme" data-theme-toggle aria-pressed="false">Ciemny motyw</button>
+          <button type="button" data-c="showLogin">Dziennik elektroniczny</button>
+        </div>
+      </header>
+      <main id="publicSchoolContent" class="public-main"></main>
+      <footer class="school-footer">
+        <span>Zespół Szkół Techniczno-Informatycznych w Gliwicach</span>
+        <a href="https://zsti.gliwice.pl/" target="_blank" rel="noopener noreferrer">Oficjalna strona ZSTI</a>
+      </footer>
+    </div>
     <div id="login" hidden>
-      <div class="card login">
-        <h1>Dziennik szkolny</h1>
-        <form data-h="login">
-          <label>E-mail<input name="email" type="email" required autofocus /></label>
-          <label>Hasło<input name="password" type="password" required /></label><button>Zaloguj się</button>
-        </form>
-        <p><a href="#" data-c="showReset">Nie pamiętam hasła</a></p>
-        <div id="resetBox" hidden>
-          <form data-h="resetReq">
-            <label>E-mail konta<input name="email" type="email" required /></label
-            ><button class="sec">Wyślij token resetu</button>
+      <main class="login-shell">
+        <aside class="login-aside">
+          <a class="login-brand" href="#about" data-c="showSchoolHome" aria-label="ZSTI Gliwice — strona główna">
+            <span class="school-brand-mark">ZSTI</span>
+            <span><strong>Zespół Szkół</strong><small>Techniczno-Informatycznych</small></span>
+          </a>
+          <div class="login-aside-copy">
+            <p class="login-kicker">GLIWICE · DZIENNIK SZKOLNY</p>
+            <h2>Szkoła.<br />W jednym miejscu.</h2>
+            <p>Plan, oceny i codzienna komunikacja — dostępne po zalogowaniu.</p>
+          </div>
+          <a class="login-back-link" href="https://zsti.gliwice.pl/" target="_blank" rel="noopener noreferrer">Oficjalna strona szkoły <span aria-hidden="true">↗</span></a>
+        </aside>
+        <section class="card login" aria-labelledby="loginTitle">
+          <div class="login-toolbar">
+            <span>STREFA UŻYTKOWNIKA</span>
+            <button type="button" class="sec theme-toggle" data-c="toggleTheme" data-theme-toggle aria-pressed="false">Ciemny motyw</button>
+          </div>
+          <h1 id="loginTitle">Zaloguj się</h1>
+          <p class="login-intro">Wpisz dane swojego konta, aby przejść do dziennika.</p>
+          <p class="login-account-note">Nie masz konta? Poproś sekretariat o jego założenie.</p>
+          <form data-h="login">
+            <label>E-mail<input name="email" type="email" required autofocus /></label>
+            <label>Hasło<input name="password" type="password" required /></label>
+            <button>Zaloguj się</button>
           </form>
-          <form data-h="resetDo">
-            <label>Token z wiadomości<input name="token" required /></label
-            ><label
-              >Nowe hasło (min. 8 znaków)<input
-                name="password"
-                type="password"
-                minlength="8"
-                required /></label
-            ><button class="sec">Ustaw nowe hasło</button>
-          </form>
-          <p class="muted">Bez skonfigurowanej poczty token trafia do pliku <code>data/mail.log</code>.</p>
-        </div>
-        <div class="demo-accounts">
-          <p class="muted">Logowanie demo (hasło <code>haslo123</code>):</p>
-          <button type="button" class="sec" data-c="demoLogin" data-a="admin@szkola.local">Administrator · admin@szkola.local</button>
-          <button type="button" class="sec" data-c="demoLogin" data-a="dyrektor@szkola.local">Dyrektor · dyrektor@szkola.local</button>
-          <button type="button" class="sec" data-c="demoLogin" data-a="sekretariat@szkola.local">Sekretariat · sekretariat@szkola.local</button>
-          <button type="button" class="sec" data-c="demoLogin" data-a="nauczyciel@szkola.local">Nauczyciel · nauczyciel@szkola.local</button>
-          <button type="button" class="sec" data-c="demoLogin" data-a="wychowawca@szkola.local">Wychowawca · wychowawca@szkola.local</button>
-          <button type="button" class="sec" data-c="demoLogin" data-a="rodzic@szkola.local">Rodzic · rodzic@szkola.local</button>
-          <button type="button" class="sec" data-c="demoLogin" data-a="uczen@szkola.local">Uczeń · uczen@szkola.local</button>
-        </div>
-      </div>
+          <p class="login-reset"><a href="#" data-c="showReset">Nie pamiętam hasła</a></p>
+          <div id="resetBox" hidden>
+            <form data-h="resetReq">
+              <label>E-mail konta<input name="email" type="email" required /></label
+              ><button class="sec">Wyślij token resetu</button>
+            </form>
+            <form data-h="resetDo">
+              <label>Token z wiadomości<input name="token" required /></label
+              ><label
+                >Nowe hasło (min. 8 znaków)<input
+                  name="password"
+                  type="password"
+                  minlength="8"
+                  required /></label
+              ><button class="sec">Ustaw nowe hasło</button>
+            </form>
+            <p class="muted">Bez skonfigurowanej poczty token resetu trafia do lokalnego logu administratora.</p>
+          </div>
+          <div class="demo-accounts">
+            <div class="demo-heading"><strong>Konta demonstracyjne</strong><span>Hasło: <code>haslo123</code></span></div>
+            <button type="button" class="sec" data-c="demoLogin" data-a="admin@szkola.local">Administrator · admin@szkola.local</button>
+            <button type="button" class="sec" data-c="demoLogin" data-a="dyrektor@szkola.local">Dyrektor · dyrektor@szkola.local</button>
+            <button type="button" class="sec" data-c="demoLogin" data-a="sekretariat@szkola.local">Sekretariat · sekretariat@szkola.local</button>
+            <button type="button" class="sec" data-c="demoLogin" data-a="nauczyciel@szkola.local">Nauczyciel · nauczyciel@szkola.local</button>
+            <button type="button" class="sec" data-c="demoLogin" data-a="wychowawca@szkola.local">Wychowawca · wychowawca@szkola.local</button>
+            <button type="button" class="sec" data-c="demoLogin" data-a="rodzic@szkola.local">Rodzic · rodzic@szkola.local</button>
+            <button type="button" class="sec" data-c="demoLogin" data-a="uczen@szkola.local">Uczeń · uczen@szkola.local</button>
+          </div>
+        </section>
+      </main>
     </div>
     <div id="app" hidden>
-      <header>
-        <strong>Dziennik szkolny</strong><span id="who"></span
-        ><button class="sec" data-c="logout">Wyloguj</button>
+      <a class="skip-link" href="#main">Przejdź do treści</a>
+      <header class="app-header">
+        <a class="app-brand" href="#about" data-c="showSchoolHome" aria-label="ZSTI Gliwice — strona główna">
+          <span class="school-brand-mark">ZSTI</span>
+          <span class="app-brand-copy"><strong>Dziennik</strong><small>Gliwice · system szkolny</small></span>
+        </a>
+        <div class="app-context" aria-live="polite">
+          <span>PRZESTRZEŃ SZKOLNA</span>
+          <strong id="currentView">Dziennik elektroniczny</strong>
+        </div>
+        <button
+          id="navToggle"
+          type="button"
+          class="sec nav-toggle"
+          data-c="toggleNav"
+          aria-controls="nav"
+          aria-expanded="false"
+        >Menu</button>
+        <div class="app-account">
+          <span id="who"></span>
+          <button type="button" class="sec theme-toggle" data-c="toggleTheme" data-theme-toggle aria-pressed="false">Ciemny motyw</button>
+          <button type="button" class="sec" data-c="logout">Wyloguj</button>
+        </div>
       </header>
       <div class="layout">
-        <nav id="nav"></nav>
+        <nav id="nav" aria-label="Nawigacja dziennika"></nav>
         <main id="main"></main>
       </div>
     </div>
     <div id="toast" role="status"></div>
+    <script src="js/vendor/gsap.min.js"></script>
     <script src="js/core.js"></script>
     <script src="js/views/assignments.js"></script>
     <script src="js/views/classes.js"></script>
@@ -69,11 +135,17 @@
     <script src="js/views/parents.js"></script>
     <script src="js/views/reports.js"></script>
     <script src="js/views/schedule.js"></script>
+    <script src="js/views/school.js"></script>
     <script src="js/views/stats.js"></script>
     <script src="js/views/students.js"></script>
     <script src="js/views/subjects.js"></script>
     <script src="js/views/teachers.js"></script>
     <script src="js/views/users.js"></script>
+    <script src="js/views/cms.js"></script>
+    <script src="js/views/messages.js"></script>
+    <script src="js/views/training.js"></script>
+    <script src="js/views/privacy.js"></script>
+    <script src="js/views/dashboard.js"></script>
     <script src="js/routes.js"></script>
   </body>
 </html>
